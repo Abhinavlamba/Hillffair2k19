@@ -26,7 +26,7 @@ public class VolleyService {
     }
 
 
-    public void postDataVolley(final String requestType, String url, JSONObject sendObj){
+    public void postJsonDataVolley(final String requestType, String url, JSONObject sendObj){
         try {
             RequestQueue queue = Volley.newRequestQueue(mContext);
 
@@ -78,7 +78,7 @@ public class VolleyService {
     public void getJsonArrayDataVolley(final String requestType , String url)
     {
         RequestQueue queue = Volley.newRequestQueue(mContext);
-        JsonArrayRequest request = new JsonArrayRequest("http://example.com/feed.json",
+        JsonArrayRequest request = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray jsonArray) {
