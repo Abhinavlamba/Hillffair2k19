@@ -64,12 +64,14 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:rotation="45"
+                    android:id="@+id/coupon1"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_coupon"/>
                 <ImageView
                     android:layout_width="0dp"
                     android:padding="10dp"
                     android:layout_weight="1"
+                    android:id="@+id/coupon2"
                     android:rotation="45"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_coupon"/>
@@ -83,6 +85,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:rotation="45"
+                    android:id="@+id/coupon3"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_coupon"/>
                 <ImageView
@@ -90,6 +93,7 @@
                     android:padding="10dp"
                     android:rotation="45"
                     android:layout_weight="1"
+                    android:id="@+id/coupon4"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_coupon"/>
             </LinearLayout>
@@ -102,6 +106,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:rotation="45"
+                    android:id="@+id/coupon5"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_coupon"/>
                 <ImageView
@@ -109,6 +114,7 @@
                     android:padding="10dp"
                     android:rotation="45"
                     android:layout_weight="1"
+                    android:id="@+id/coupon6"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_coupon"/>
             </LinearLayout>

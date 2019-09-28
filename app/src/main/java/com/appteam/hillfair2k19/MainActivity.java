@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.transition.CircularPropagation;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -27,6 +28,9 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.androidnetworking.AndroidNetworking;
+import com.appteam.fragments.ClubsFragment;
+import com.appteam.fragments.Coupons;
+import com.appteam.fragments.SponsersFragment;
 import com.cloudinary.android.MediaManager;
 import com.appteam.fragments.LeaderboardFragment;
 import com.schibsted.spain.parallaxlayerlayout.ParallaxLayerLayout;
@@ -38,6 +42,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
     IResult mResultCallback;
@@ -66,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     public static  int coupon;
 
     public static  int currentSelected;
+    Button sponsors , club , coreteam , reward;
 
 
 
@@ -77,13 +84,48 @@ public class MainActivity extends AppCompatActivity {
         linkViews();
 
        FragmentManager fragmentManager=getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction ();
-        FaceSmash faceSmash=new FaceSmash();
-        LeaderboardFragment l=new LeaderboardFragment();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction ();
+        final FaceSmash faceSmash=new FaceSmash();
+        LeaderboardFragment leaderboardFragment =new LeaderboardFragment();
 // work here to change Activity fragments (add, remove, etc.).  Example here of adding.
-        fragmentTransaction.add (R.id.fragmentHolder, faceSmash);
-        fragmentTransaction.commit ();
-
+//        fragmentTransaction.add (R.id.fragmentHolder, faceSmash);
+//        fragmentTransaction.commit ();
+        sponsors = findViewById(R.id.sponsors);
+        club = findViewById(R.id.club);
+        coreteam = findViewById(R.id.core);
+        reward = findViewById(R.id.reward);
+        sponsors.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SponsersFragment sponsersFragment = new SponsersFragment(MainActivity.this);
+                fragmentTransaction.add (R.id.fragmentHolder, sponsersFragment);
+                fragmentTransaction.commit();
+            }
+        });
+        club.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClubsFragment clubsFragment = new ClubsFragment(MainActivity.this);
+                fragmentTransaction.add (R.id.fragmentHolder, clubsFragment);
+                fragmentTransaction.commit ();
+            }
+        });
+        coreteam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                coreteam coreteam = new coreteam(MainActivity.this);
+                fragmentTransaction.add (R.id.fragmentHolder, coreteam);
+                fragmentTransaction.commit ();
+            }
+        });
+        reward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Coupons coupons = new Coupons(MainActivity.this);
+                fragmentTransaction.add (R.id.fragmentHolder, coupons);
+                fragmentTransaction.commit ();
+            }
+        });
 
 //        ParallaxLayerLayout parallaxLayout=findViewById(R.id.parallaxLayout);
 //
@@ -127,23 +169,15 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent intent=new Intent(MainActivity.this,QuizCategories.class);
 //        startActivity(intent);
-        Map config = new HashMap();
-        config.put("cloud_name", "dpxfdn3d8");
-        config.put("api_key", "172568498646598");
-        config.put("api_secret", "NNa_bFKyVxW0AB30wL8HVoFxeSs");
-        MediaManager.init(this, config);
 //        MediaManager.init(this);
 
-        Button button = findViewById(R.id.profile);
-        button.setOnClickListener(new View.OnClickListener() {
+        CircleImageView profile = findViewById(R.id.profile);
+        profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,Profile.class));
             }
         });
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
 //        FaceSmash fragment = new FaceSmash();
 //        com.appteam.hillfair2k19.fragments.SponsersFragment fragment = new com.appteam.hillfair2k19.fragments.SponsersFragment(this);
 ////        coreteam fragment = new coreteam(this);
