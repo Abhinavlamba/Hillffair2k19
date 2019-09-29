@@ -371,12 +371,12 @@ public class Profile extends AppCompatActivity {
                                 System.out.println(resultData.get("url"));
                                 imgUrl = String.valueOf(resultData.get("url"));
                                 Toast.makeText(Profile.this, imgUrl + "ABCD", Toast.LENGTH_SHORT).show();
-                                post(ContactNumber);
-                                startActivity(new Intent(Profile.this, MainActivity.class));
-                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//                                startActivity(new Intent(Profile.this, MainActivity.class));
+//                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
                                 editor.putString("ImageURL", String.valueOf(resultData.get("url")));
                                 editor.commit();
+                                post(ContactNumber);
                                 finish();
                             }
 
@@ -408,24 +408,9 @@ public class Profile extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // System.out.print(getString(R.string.baseUrl) + "User/" + Name + "/" + RollNumber + "/" + ContactNumber);//22
-//        AndroidNetworking.get(getString(R.string.baseUrl) + "/User/")
-//                .build()
-//                .getAsJSONArray(new JSONArrayRequestListener() {
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        progress.setVisibility(View.GONE);
-//                        // do anything with response
-//                    }
-//
-//                    @Override
-//                    public void onError(ANError error) {
-//                        // handle error
-//                    }
-//                });
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, getString(R.string.baseUrl) + "/User",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, getString(R.string.baseUrl) + "/User/Update",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -444,15 +429,16 @@ public class Profile extends AppCompatActivity {
 
                 SharedPreferences sharedPreferences = getSharedPreferences("number",MODE_PRIVATE);
                 String id = sharedPreferences.getString("fireBaseId",null);
+                Toast.makeText(Profile.this, id, Toast.LENGTH_SHORT).show();
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("firebase_id",id);
-                params.put("roll_number", RollNumber);
-                params.put("branch", Branch);
-                params.put("mobile", ContactNumber);
-                params.put("referral_friend", referal);
-                params.put("name", Name);
-                params.put("gender", "MALE");
-                params.put("face_smash_status", "0");
+//                params.put("roll_number", RollNumber);
+//                params.put("branch", Branch);
+//                params.put("mobile", ContactNumber);
+//                params.put("referral_friend", referal);
+//                params.put("name", Name);
+//                params.put("gender", "MALE");
+//                params.put("face_smash_status", "0");
                 params.put("image_url", imgUrl);
                 return params;
             }
