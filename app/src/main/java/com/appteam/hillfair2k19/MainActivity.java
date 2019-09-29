@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.appteam.Wall.WallFragment;
 import com.appteam.fragments.ClubsFragment;
 import com.appteam.fragments.Coupons;
 import com.appteam.fragments.SponsersFragment;
@@ -82,11 +83,12 @@ public class MainActivity extends AppCompatActivity {
        FragmentManager fragmentManager=getSupportFragmentManager();
 
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction ();
-        final FaceSmash faceSmash=new FaceSmash();
+        final WallFragment faceSmash=new WallFragment(this);
+
         LeaderboardFragment leaderboardFragment =new LeaderboardFragment();
 // work here to change Activity fragments (add, remove, etc.).  Example here of adding.
-//        fragmentTransaction.add (R.id.fragmentHolder, faceSmash);
-//        fragmentTransaction.commit ();
+        fragmentTransaction.add (R.id.fragmentHolder, faceSmash);
+        fragmentTransaction.commit();
         viewPager=findViewById(R.id.viewpager);
         final SimpleFragmentPagerAdapter adapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
         viewPager.setAdapter(adapter);

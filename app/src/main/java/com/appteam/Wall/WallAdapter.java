@@ -59,9 +59,9 @@ public class WallAdapter extends RecyclerView.Adapter<WallAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         wall = wallList.get(position);
-        SharedPreferences prefs = activity.getSharedPreferences("number", Context.MODE_PRIVATE);
-        roll = prefs.getString("roll number", "gsb");
-        Log.e("image_url",wallList.get(position).getImage_url());
+//        SharedPreferences prefs = activity.getSharedPreferences("number", Context.MODE_PRIVATE);
+//        roll = prefs.getString("roll number", "gsb");
+        if (wallList.get(position).getImage_url() != null)
         Picasso.with(activity).load(wallList.get(position).getImage_url()).into(holder.image);
 //        holder.like_count.setText(likesArray.get(position) + " Likes");
 //        getlike2(holder);

@@ -43,12 +43,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        Intent intent = new Intent(context, MainActivity.class);
-//        intent.putExtra("newBranch",newBranch);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
-//
-//        finish();
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("newBranch",newBranch);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        finish();
         phone_button = findViewById(R.id.phone_login);
         phone_button.setOnClickListener(this);
     }

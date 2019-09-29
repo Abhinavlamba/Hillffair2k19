@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.appteam.adapters.TeamAdapter;
 import com.appteam.hillfair2k19.Profile;
 import com.appteam.hillfair2k19.R;
+import com.google.gson.JsonObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class Coupons extends Fragment {
     private String mParam1;
     private String mParam2;
     String sub_candies;
+    String firebase_id = "12345";
     ImageView coupon1 , coupon2 , coupon3 , coupon4 , coupon5 , coupon6;
     public Coupons() {
         // Required empty public constructor
@@ -66,21 +68,22 @@ public class Coupons extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(activity, String.valueOf(error), Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override
             protected Map<String,String> getParams(){
                 Map<String,String> params = new HashMap<String, String>();
-                params.put("firebase_id","12345");
+                params.put("firebase_id",firebase_id);
                 params.put("sub_candies",sub_candies);
                 return params;
             }
-
         };
         queue.add(stringRequest);
 
@@ -101,6 +104,7 @@ public class Coupons extends Fragment {
         coupon1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), "njkldvn", Toast.LENGTH_SHORT).show();
                 sub_candies = "100";
                 post();
             }
