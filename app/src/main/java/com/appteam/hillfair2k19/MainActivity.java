@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
 //import com.appteam.Wall.WallFragment;
+import com.appteam.Wall.WallFragment;
 import com.appteam.fragments.ClubsFragment;
 import com.appteam.fragments.Coupons;
 import com.appteam.fragments.SponsersFragment;
@@ -50,7 +51,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity  implements View.OnClickListener, ViewPager.OnPageChangeListener  {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     IResult mResultCallback;
     IResult mResultCallbackAndroidNeworking;
 
@@ -72,30 +73,27 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     ViewPager viewPager;
     ParallaxLayerLayout.TranslationUpdater sensorTranslationUpdater;
 
-    public static int home ;
-    public static  int games ;
-    public static  int schedule ;
-    public static  int coupon;
+    public static int home;
+    public static int games;
+    public static int schedule;
+    public static int coupon;
     public static String fireBaseID;
-    public static  int currentSelected;
+    public static int currentSelected;
 
-    Button sponsors , club , coreteam , reward;
+    Button sponsors, club, coreteam, reward;
 
 
     private View nav;
     private LottieAnimationView navAnim;
-    private TextView title, profileNav, aboutNav, settingNav, sponsorNav, callNav, notifNav, mapNav, hillffairNav, contributorNav,facesmash,leaderboard,coreTeamNav,clubsNav;
+    private TextView title, profileNav, aboutNav, settingNav, sponsorNav, callNav, notifNav, mapNav, hillffairNav, contributorNav, facesmash, leaderboard, coreTeamNav, clubsNav;
     private boolean check = true;
     private RelativeLayout navDrawer;
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         nav = findViewById(R.id.nav);
@@ -110,10 +108,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         hillffairNav = findViewById(R.id.hillffairNav);
         mapNav = findViewById(R.id.mapNav);
         contributorNav = findViewById(R.id.contributorNav);
-        facesmash=findViewById(R.id.facesmash);
-        leaderboard=findViewById(R.id.leaderboard);
-        coreTeamNav=findViewById(R.id.coreTeamNav);
-        clubsNav=findViewById(R.id.clubsNav);
+        facesmash = findViewById(R.id.facesmash);
+        leaderboard = findViewById(R.id.leaderboard);
+        coreTeamNav = findViewById(R.id.coreTeamNav);
+        clubsNav = findViewById(R.id.clubsNav);
 
         profileNav.setOnClickListener(this);
         aboutNav.setOnClickListener(this);
@@ -130,76 +128,80 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         clubsNav.setOnClickListener(this);
 
 
-
         final SharedPreferences sharedPreferences = getSharedPreferences("number", Context.MODE_PRIVATE);
-        fireBaseID = sharedPreferences.getString("fireBaseId",null);
+        fireBaseID = sharedPreferences.getString("fireBaseId", null);
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        // final WallFragment faceSmash=new WallFragment(this);
 
-        linkViews();
-
-       FragmentManager fragmentManager=getSupportFragmentManager();
-
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction ();
-       // final WallFragment faceSmash=new WallFragment(this);
-
-        LeaderboardFragment leaderboardFragment =new LeaderboardFragment();
+        LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
 // work here to change Activity fragments (add, remove, etc.).  Example here of adding.
-      //  fragmentTransaction.add (R.id.fragmentHolder, faceSmash);
-       // fragmentTransaction.commit();
+        //  fragmentTransaction.add (R.id.fragmentHolder, faceSmash);
+        // fragmentTransaction.commit();
 
-        viewPager=findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         final SimpleFragmentPagerAdapter adapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
+            }
 
-        //configuring cloudinary
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+
+        });
+        linkViews();
+        profile = findViewById(R.id.profile);
+
+        SharedPreferences prefs = getSharedPreferences("number", Context.MODE_PRIVATE);
+        String check2 = prefs.getString("Image", "https://www.fluigent.com/wp-content/uploads/2018/07/default-avatar-BW.png");
+        if (!check2.equals("https://www.fluigent.com/wp-content/uploads/2018/07/default-avatar-BW.png")) {
+            Bitmap img = setProfile(check2);
+            profile.setImageBitmap(img);
+        } else {
+            Picasso.with(MainActivity.this).load(check2).resize(80, 80).centerCrop().into(profile);
+        }
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ProfileMain.class));
+            }
+        });
+
+        home=homeLinearLayout.getMeasuredWidth();
+        games=gameLinearLayout.getMeasuredWidth();
+        schedule=scheduleLinearLayout.getMeasuredWidth();
+        coupon=couponLinearLayout.getMeasuredWidth();
+        animate(gameLinearLayout, gamesTextView);
+        animate(scheduleLinearLayout, scheduleTextView);
+        animate(couponLinearLayout, couponTextView);
+        currentSelected=0;
+    }
+
+    //configuring cloudinary
 //         Map config = new HashMap();
 //         config.put("cloud_name", "dpxfdn3d8");
 //         config.put("api_key", "172568498646598");
 //         config.put("api_secret", "NNa_bFKyVxW0AB30wL8HVoFxeSs");
 //         MediaManager.init(this, config);
 
-//         linkViews();
+
+//            final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
 
-
-        FragmentManager fragmentManager=getSupportFragmentManager();
-
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction ();
-
-
-        WallFragment wallFragment = new WallFragment(this);
-        fragmentTransaction.replace (R.id.fragmentHolder,wallFragment );
-        fragmentTransaction.commit ();
-
-//        viewPager=findViewById(R.id.viewpager);
-//        final SimpleFragmentPagerAdapter adapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
-//        viewPager.setAdapter(adapter);
-//        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//            WallFragment wallFragment = new WallFragment(this);
+//        fragmentTransaction.replace(R.id.fragmentHolder,wallFragment );
+//        fragmentTransaction.commit();
 //
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
-
 
 //        sponsors = findViewById(R.id.sponsors);
 //        club = findViewById(R.id.club);
@@ -245,35 +247,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 //        parallaxLayout.setTranslationUpdater(sensorTranslationUpdater);
 
 
-
 //        gameLinearLayout.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP);
 //
 //        gameLinearLayout.getBackground().setColorFilter(Color.parseColor("#00FFFFFF"), PorterDuff.Mode.SRC_ATOP);
-
-
-        home=homeLinearLayout.getMeasuredWidth();
-        games=gameLinearLayout.getMeasuredWidth();
-        schedule=scheduleLinearLayout.getMeasuredWidth();
-        coupon=couponLinearLayout.getMeasuredWidth();
-
-
-        animate(gameLinearLayout,gamesTextView);
-        animate(scheduleLinearLayout,scheduleTextView);
-        animate(couponLinearLayout,couponTextView);
-
-
-
-
-
-        currentSelected=0;
-
-
-
-
-
-
-
-
 
 
 
@@ -282,26 +258,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 //        Intent intent=new Intent(MainActivity.this,QuizCategories.class);
 //        startActivity(intent);
 //        MediaManager.init(this);
-        profile=findViewById(R.id.profile);
-        SharedPreferences prefs = getSharedPreferences("number", Context.MODE_PRIVATE);
-        String check2 = prefs.getString("Image", "https://www.fluigent.com/wp-content/uploads/2018/07/default-avatar-BW.png");
-        if (!check2.equals("https://www.fluigent.com/wp-content/uploads/2018/07/default-avatar-BW.png")) {
-            Bitmap img = setProfile(check2);
-            profile.setImageBitmap(img);
-        } else {
-            Picasso.with(MainActivity.this).load(check2).resize(80, 80).centerCrop().into(profile);
-        }
-
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,ProfileMain.class));
-            }
-        });
 
 
     //    FragmentManager fragmentManager = getSupportFragmentManager();
-      //  FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    //  FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
 
 //        FaceSmash fragment = new FaceSmash();
@@ -312,20 +272,21 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 //        fragmentTransaction.add(R.id.fragmentHolder, fragment);
 //        fragmentTransaction.commit();
 
-        // For Volley Api Users
+    // For Volley Api Users
 
-        //Initialising
-        initVolleyCallback();
-        VolleyService mVolleyService = new VolleyService(mResultCallback,this);
+    //Initialising
+//    initVolleyCallback();
+//
+//    VolleyService mVolleyService = new VolleyService(mResultCallback, this);
 
-        //GET REQUEST SINGLE JSON OBJECT
+    //GET REQUEST SINGLE JSON OBJECT
 //        mVolleyService.getJsonObjectDataVolley("GETCALL","https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22");
 
 //        GET REQUEST FOR JSON Array
 //        mVolleyService.getJsonArrayDataVolley("GETJSONARRAYLIFESAVER","https://lifesaverapp.herokuapp.com/controlpolice");
 
 
-        // POST REQUEST JSON BODY
+    // POST REQUEST JSON BODY
 //        JSONObject jsonObject = new JSONObject();
 //        try {
 //    jsonObject.put("latitude","98.0");
@@ -339,11 +300,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 //        mVolleyService.postJsonDataVolley("POSTJSONDATALIFESAVER","https://lifesaverapp.herokuapp.com/controlpolice",jsonObject);
 
 
+    //For Android Networking Users
 
-
-        //For Android Networking Users
-
-        //Initialising
+    //Initialising
 //        initAndroidNetworkingCallback();
 //        AndroidNetworking.initialize(MainActivity.this);
 //        com.appteam.hillfair2k19.AndroidNetworking androidNetworking = new com.appteam.hillfair2k19.AndroidNetworking(mResultCallbackAndroidNeworking,this);
@@ -352,11 +311,11 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 //        androidNetworking.getJsonObjectAndroidNetworking("GETCALL","https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22");
 
 
-        //GET REQUEST FOR JSON ARRAY
+    //GET REQUEST FOR JSON ARRAY
 //        androidNetworking.getJsonArrayAndroidNetworking("GETJSONARRAYFROMLIIFESAVER","https://lifesaverapp.herokuapp.com/controlpolice");
 
 
-        //POST REQUEST A JSON OBJECT OR BODY
+    //POST REQUEST A JSON OBJECT OR BODY
 //        JSONObject jsonObject = new JSONObject();
 //        try {
 //    jsonObject.put("latitude","98.0");
@@ -369,23 +328,20 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 //        }
 //
 //        androidNetworking.postJsondataAndroidNetworking("POSTINGJOSNBODYTOLIFESAVER","https://lifesaverapp.herokuapp.com/controlpolice",jsonObject);
-    }
+
     public Bitmap setProfile(String images) {
         byte[] decodedByte = Base64.decode(images, 0);
         return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
     }
 
-    void initVolleyCallback(){
+    void initVolleyCallback() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType, JSONObject response , JSONArray jsonArray) {
-                if (response != null)
-                {
+            public void notifySuccess(String requestType, JSONObject response, JSONArray jsonArray) {
+                if (response != null) {
                     //JsonObject
 //                    Toast.makeText(MainActivity.this, String.valueOf(response), Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     //JsonArray
 //                    Toast.makeText(MainActivity.this, String.valueOf(jsonArray), Toast.LENGTH_SHORT).show();
                 }
@@ -393,21 +349,19 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
             @Override
             public void notifyError(String requestType, VolleyError error) {
-}
+            }
         };
 
     }
-    void initAndroidNetworkingCallback(){
+
+    void initAndroidNetworkingCallback() {
         mResultCallbackAndroidNeworking = new IResult() {
             @Override
-            public void notifySuccess(String requestType, JSONObject response , JSONArray jsonArray) {
-                if (response != null)
-                {
+            public void notifySuccess(String requestType, JSONObject response, JSONArray jsonArray) {
+                if (response != null) {
                     //JsonObject
 //                    Toast.makeText(MainActivity.this, String.valueOf(response), Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     //JsonArray
 //                    Toast.makeText(MainActivity.this, String.valueOf(jsonArray), Toast.LENGTH_SHORT).show();
                 }
@@ -420,110 +374,110 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         };
     }
 
-    public void linkViews(){
+    public void linkViews() {
 
-        homeButton=findViewById(R.id.homeButton);
-        gamesButton=findViewById(R.id.gamesButton);
-        scheduleButton=findViewById(R.id.scheduleButton);
-        couponButton=findViewById(R.id.couponButton);
+        homeButton = findViewById(R.id.homeButton);
+        gamesButton = findViewById(R.id.gamesButton);
+        scheduleButton = findViewById(R.id.scheduleButton);
+        couponButton = findViewById(R.id.couponButton);
 
-        homeTextView=findViewById(R.id.homeTextView);
-        gamesTextView=findViewById(R.id.gameTextView);
-        scheduleTextView=findViewById(R.id.scheduleTextView);
-        couponTextView=findViewById(R.id.couponTextView);
+        homeTextView = findViewById(R.id.homeTextView);
+        gamesTextView = findViewById(R.id.gameTextView);
+        scheduleTextView = findViewById(R.id.scheduleTextView);
+        couponTextView = findViewById(R.id.couponTextView);
 
-         homeLinearLayout=findViewById(R.id.homeLayout);
-       gameLinearLayout=findViewById(R.id.gamesLayout);
-        scheduleLinearLayout=findViewById(R.id.scheduleLayout);
-       couponLinearLayout=findViewById(R.id.couponsLayout);
+        homeLinearLayout = findViewById(R.id.homeLayout);
+        gameLinearLayout = findViewById(R.id.gamesLayout);
+        scheduleLinearLayout = findViewById(R.id.scheduleLayout);
+        couponLinearLayout = findViewById(R.id.couponsLayout);
 
 
     }
 
 
-    public void handleClick(View view){
-        int id=view.getId();
+    public void handleClick(View view) {
+        int id = view.getId();
         LinearLayout l;
-        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction ();
-        switch (id){
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        switch (id) {
             case R.id.homeButton:
             case R.id.homeTextView:
 
-                currentSelected=0;
-               l=findViewById(R.id.homeLayout);
+                currentSelected = 0;
+                l = findViewById(R.id.homeLayout);
                 //TODO: load homepage
                 WallFragment wallFragment = new WallFragment(this);
-                fragmentTransaction.replace (R.id.fragmentHolder,wallFragment );
-                fragmentTransaction.commit ();
+                fragmentTransaction.replace(R.id.fragmentHolder, wallFragment);
+                fragmentTransaction.commit();
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
-                animateReverse(l,homeTextView);
+                animateReverse(l, homeTextView);
 
-                animate(gameLinearLayout,gamesTextView);
-                animate(scheduleLinearLayout,scheduleTextView);
-                animate(couponLinearLayout,couponTextView);
+                animate(gameLinearLayout, gamesTextView);
+                animate(scheduleLinearLayout, scheduleTextView);
+                animate(couponLinearLayout, couponTextView);
 
-              //  Toast.makeText(this,"" +currentSelected,Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(this,"" +currentSelected,Toast.LENGTH_SHORT).show();
 
 
                 break;
             case R.id.gamesButton:
             case R.id.gameTextView:
-                currentSelected=1;
+                currentSelected = 1;
 
-               l=findViewById(R.id.gamesLayout);
+                l = findViewById(R.id.gamesLayout);
                 //TODO: load gamepage
 
                 QuizCategories quizCategories = new QuizCategories(this);
-                fragmentTransaction.replace (R.id.fragmentHolder,quizCategories );
-                fragmentTransaction.commit ();
+                fragmentTransaction.replace(R.id.fragmentHolder, quizCategories);
+                fragmentTransaction.commit();
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                animateReverse(l,gamesTextView);
+                animateReverse(l, gamesTextView);
 
-                animate(homeLinearLayout,homeTextView);
-                animate(scheduleLinearLayout,scheduleTextView);
-                animate(couponLinearLayout,couponTextView);
+                animate(homeLinearLayout, homeTextView);
+                animate(scheduleLinearLayout, scheduleTextView);
+                animate(couponLinearLayout, couponTextView);
 
 
-             //   Toast.makeText(this,"" +currentSelected,Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(this,"" +currentSelected,Toast.LENGTH_SHORT).show();
 
 
                 break;
             case R.id.scheduleButton:
             case R.id.scheduleTextView:
-                currentSelected=2;
+                currentSelected = 2;
 
-             l=findViewById(R.id.scheduleLayout);
+                l = findViewById(R.id.scheduleLayout);
                 //TODO: load schedulepage
 
-                animate(gameLinearLayout,gamesTextView);
-                animate(homeLinearLayout,homeTextView);
-                animate(couponLinearLayout,couponTextView);
-                animateReverse(l,scheduleTextView);
-              //  Toast.makeText(this,"" +currentSelected,Toast.LENGTH_SHORT).show();
+                animate(gameLinearLayout, gamesTextView);
+                animate(homeLinearLayout, homeTextView);
+                animate(couponLinearLayout, couponTextView);
+                animateReverse(l, scheduleTextView);
+                //  Toast.makeText(this,"" +currentSelected,Toast.LENGTH_SHORT).show();
 
 
                 break;
             case R.id.couponButton:
             case R.id.couponTextView:
-                currentSelected=3;
+                currentSelected = 3;
 
-              l=findViewById(R.id.couponsLayout);
+                l = findViewById(R.id.couponsLayout);
                 //TODO: load couponpage
 
                 Coupons coupons = new Coupons();
-                fragmentTransaction.replace (R.id.fragmentHolder,coupons );
-                fragmentTransaction.commit ();
+                fragmentTransaction.replace(R.id.fragmentHolder, coupons);
+                fragmentTransaction.commit();
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
-                animate(gameLinearLayout,gamesTextView);
-                animate(scheduleLinearLayout,scheduleTextView);
-                animate(homeLinearLayout,homeTextView);
+                animate(gameLinearLayout, gamesTextView);
+                animate(scheduleLinearLayout, scheduleTextView);
+                animate(homeLinearLayout, homeTextView);
 
-                animateReverse(l,couponTextView);
-               // Toast.makeText(this,"" +currentSelected,Toast.LENGTH_SHORT).show();
+                animateReverse(l, couponTextView);
+                // Toast.makeText(this,"" +currentSelected,Toast.LENGTH_SHORT).show();
 
 
                 break;
@@ -534,7 +488,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     }
 
 
-    public void animate(final LinearLayout l,final View txtv){
+    public void animate(final LinearLayout l, final View txtv) {
         txtv.setVisibility(View.GONE);
         ValueAnimator anim = ValueAnimator.ofInt(l.getMeasuredWidth(), 56);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -552,22 +506,20 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         l.getBackground().setColorFilter(Color.parseColor("#00FFFFFF"), PorterDuff.Mode.SRC_ATOP);
 
 
-
-
     }
 
-    public void animateReverse(final LinearLayout l,final View txtv){
+    public void animateReverse(final LinearLayout l, final View txtv) {
         txtv.setVisibility(View.VISIBLE);
-        int x=l.getId();
+        int x = l.getId();
         int w;
-        if(x==R.id.homeLayout)w=home;
-        else if(x==R.id.gamesLayout)w=games;
-        else if(x==R.id.scheduleLayout)w=schedule;
-        if(x==R.id.couponsLayout)w=coupon;
-        else w=schedule;
+        if (x == R.id.homeLayout) w = home;
+        else if (x == R.id.gamesLayout) w = games;
+        else if (x == R.id.scheduleLayout) w = schedule;
+        if (x == R.id.couponsLayout) w = coupon;
+        else w = schedule;
 
         l.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP);
-        ValueAnimator anim = ValueAnimator.ofInt(56,300);
+        ValueAnimator anim = ValueAnimator.ofInt(56, 300);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -581,8 +533,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         anim.start();
 
 
-
-
     }
 
     @Override
@@ -592,9 +542,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction ();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         switch (view.getId()) {
             case R.id.profileNav:
                 startActivity(new Intent(this, ProfileMain.class));
@@ -602,8 +552,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 break;
             case R.id.notifNav:
                 NotificationsFragment notificationsFragment = new NotificationsFragment();
-                fragmentTransaction.replace (R.id.fragmentHolder, notificationsFragment);
-                fragmentTransaction.commit ();
+                fragmentTransaction.replace(R.id.fragmentHolder, notificationsFragment);
+                fragmentTransaction.commit();
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 navDrawer();
                 break;
@@ -613,67 +563,51 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 break;
             case R.id.facesmash:
                 FaceSmash faceSmash = new FaceSmash();
-                fragmentTransaction.replace (R.id.fragmentHolder, faceSmash);
-                fragmentTransaction.commit ();
+                fragmentTransaction.replace(R.id.fragmentHolder, faceSmash);
+                fragmentTransaction.commit();
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 navDrawer();
                 break;
             case R.id.leaderboard:
                 LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
-                fragmentTransaction.replace (R.id.fragmentHolder, leaderboardFragment);
-                fragmentTransaction.commit ();
+                fragmentTransaction.replace(R.id.fragmentHolder, leaderboardFragment);
+                fragmentTransaction.commit();
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 navDrawer();
                 break;
 
             case R.id.coreTeamNav:
                 coreteam coreteam = new coreteam();
-                fragmentTransaction.replace (R.id.fragmentHolder, coreteam);
-                fragmentTransaction.commit ();
+                fragmentTransaction.replace(R.id.fragmentHolder, coreteam);
+                fragmentTransaction.commit();
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 navDrawer();
                 break;
             case R.id.sponsorNav:
                 SponsersFragment sponsersFragment = new SponsersFragment();
-                fragmentTransaction.replace (R.id.fragmentHolder,sponsersFragment );
-                fragmentTransaction.commit ();
+                fragmentTransaction.replace(R.id.fragmentHolder, sponsersFragment);
+                fragmentTransaction.commit();
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 navDrawer();
                 break;
             case R.id.clubsNav:
                 ClubsFragment clubsFragment = new ClubsFragment();
-                fragmentTransaction.replace (R.id.fragmentHolder,clubsFragment );
-                fragmentTransaction.commit ();
+                fragmentTransaction.replace(R.id.fragmentHolder, clubsFragment);
+                fragmentTransaction.commit();
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 navDrawer();
                 break;
 
 
-
             case R.id.nav:
-               navDrawer();
+                navDrawer();
                 break;
 
         }
     }
 
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-
-    private void navDrawer(){
+    private void navDrawer() {
         if (check) {
             ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f);
             valueAnimator.setDuration(1000);

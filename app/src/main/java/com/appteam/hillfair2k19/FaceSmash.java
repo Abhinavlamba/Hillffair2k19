@@ -271,7 +271,6 @@ public class FaceSmash extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-
     }
 
 
@@ -328,6 +327,7 @@ public class FaceSmash extends Fragment {
                             obj = jsonArray.getJSONObject(i);
                             String url = obj.getString("url").replace("\\\\", "");
                             Log.e("URLs", url);
+                            if (url.contains("https"))
                             imageUrls.add(url);
 
                             String id = obj.getString("firebase_id");
@@ -378,7 +378,6 @@ public class FaceSmash extends Fragment {
                         //TODO: redirect to home page
                     }
                 })
-
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }

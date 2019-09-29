@@ -54,6 +54,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        config.put("api_secret", "NNa_bFKyVxW0AB30wL8HVoFxeSs");
 //        MediaManager.init(this, config);
 
+        setContentView(R.layout.activity_login);
+        phone_button = findViewById(R.id.phone_login);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         final SharedPreferences sharedPreferences = getSharedPreferences("number", Context.MODE_PRIVATE);
@@ -65,7 +67,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             finish();
             startActivity(new Intent(this, MainActivity.class));
         } else {
-            setContentView(R.layout.activity_login);
 
         }
 
@@ -75,7 +76,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        startActivity(intent);
 //
 //        finish();
-        phone_button = findViewById(R.id.phone_login);
         phone_button.setOnClickListener(this);
     }
 

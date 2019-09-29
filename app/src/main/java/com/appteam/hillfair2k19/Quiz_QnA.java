@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -22,6 +24,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.appteam.model.QuestionData;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,69 +69,52 @@ public class Quiz_QnA extends AppCompatActivity {
         countDownTimer=new CountDownTimer(15000,1000) {
             @Override
             public void onTick(long l) {
-                timeview.setText(String.valueOf(l/1000) );
-
+                timeview.setText(String.valueOf(l/1000));
             }
 
             @Override
             public void onFinish() {
-                counter++;
+                counter ++;
                 if(counter<questions.size()) {
                     UpdateQuestion();
-
                 }
                 else {
-
                     Score();
-//                    Toast.makeText(Quiz_QnA.this,"Your Score is"+Score,Toast.LENGTH_LONG).show();
-
-
                 }
 
 
 
             }
         };
-
-
-
-
-
-
-
         intent=getIntent();
-
-
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST,urlofApp, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Toast.makeText(Quiz_QnA.this,response,Toast.LENGTH_SHORT).show();
-                Log.e("Loggerreer",response);
-                JSONArray jsonArray = null;
+//                Toast.makeText(Quiz_QnA.this, response, Toast.LENGTH_SHORT).show();
                 try {
-                    jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray = jsonObject.getJSONArray("questions");
+                    for (int i = 0; i < jsonArray.length() && i < 10; i++) {
+                        try {
+                            QuestionData question = new QuestionData(
+                                    jsonArray.getJSONObject(i).getInt("id"),
+                                    jsonArray.getJSONObject(i).getString("ques"),
+                                    jsonArray.getJSONObject(i).getString("option1"),
+                                    jsonArray.getJSONObject(i).getString("option2"),
+                                    jsonArray.getJSONObject(i).getString("option3"),
+                                    jsonArray.getJSONObject(i).getString("option4"));
+                            questions.add(question);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("Error",e.getMessage());
+                        }
+                    }
+                UpdateQuestion();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    try {
-                        QuestionData question = new QuestionData(
-                                jsonArray.getJSONObject(i).getInt("id"),
-                                jsonArray.getJSONObject(i).getString("ques"),
-                                jsonArray.getJSONObject(i).getString("option1"),
-                                jsonArray.getJSONObject(i).getString("option2"),
-                                jsonArray.getJSONObject(i).getString("option3"),
-                                jsonArray.getJSONObject(i).getString("option4"));
-                        questions.add(question);
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e("Error",e.getMessage());
-                    }
-                }
-                UpdateQuestion();
 
             }
         }, new Response.ErrorListener() {
@@ -139,7 +127,7 @@ public class Quiz_QnA extends AppCompatActivity {
             @Override
             protected Map<String,String> getParams()  {
                 Map<String,String> params = new HashMap<>();
-                params.put("category",String.valueOf(intent.getIntExtra("Category",0)));
+                params.put("category",String.valueOf(intent.getIntExtra("Category",1)));
                 return params;
             }
         };
@@ -193,12 +181,10 @@ public class Quiz_QnA extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     private void UpdateQuestion(){
+        Toast.makeText(this, String.valueOf(counter), Toast.LENGTH_SHORT).show();
+        if (counter >= 10)
+            Score();
         questionview.setText(questions.get(counter).getQuestion());
         button_1.setText(questions.get(counter).getOption_1());
         button_2.setText(questions.get(counter).getOption_2());
@@ -227,16 +213,23 @@ public class Quiz_QnA extends AppCompatActivity {
 
     private void Score() {
 
-
-
+        final SharedPreferences sharedPreferences = getSharedPreferences("number", Context.MODE_PRIVATE);
+        final String firebase_id = sharedPreferences.getString("uid","null");
+        Log.v("firebase_id",firebase_id);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,urlofScore, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e("Loggerreer",response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    Toast.makeText(Quiz_QnA.this,String.valueOf(jsonObject.getInt("Score")),Toast.LENGTH_SHORT).show();
-                    Score = jsonObject.getInt("Score");
+                    Score = jsonObject.getInt("score");
+//                    Toast.makeText(Quiz_QnA.this, "Score is " + Score, Toast.LENGTH_SHORT).show();
+                    questionview.setText("Score " + Score);
+                    timeview.setVisibility(View.GONE);
+                    button_1.setVisibility(View.GONE);
+                    button_2.setVisibility(View.GONE);
+                    button_3.setVisibility(View.GONE);
+                    button_4.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -256,7 +249,7 @@ public class Quiz_QnA extends AppCompatActivity {
                 for(int i=0; i<questions.size();i++){
                 answer.put("'id' : '"+questions.get(i).getQuestionid()+"'","'ans' : '"+questions.get(i).getOption_chosen()+"'");
                 }
-                params.put("firebase_id","12345");
+                params.put("firebase_id",firebase_id);
                 params.put("answers",answer.toString());
                 Log.e("SentRequest",params.toString());
                 return params;
