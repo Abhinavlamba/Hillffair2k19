@@ -27,6 +27,9 @@ import com.schibsted.spain.parallaxlayerlayout.ParallaxLayerLayout;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -68,11 +71,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //configuring cloudinary
-        Map config = new HashMap();
-        config.put("cloud_name", "dpxfdn3d8");
-        config.put("api_key", "172568498646598");
-        config.put("api_secret", "NNa_bFKyVxW0AB30wL8HVoFxeSs");
-        MediaManager.init(this, config);
+//        Map config = new HashMap();
+//        config.put("cloud_name", "dpxfdn3d8");
+//        config.put("api_key", "172568498646598");
+//        config.put("api_secret", "NNa_bFKyVxW0AB30wL8HVoFxeSs");
+//        MediaManager.init(this, config);
 
         linkViews();
 

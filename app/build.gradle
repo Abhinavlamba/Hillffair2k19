@@ -66,12 +66,18 @@ dependencies {
     implementation 'com.schibsted.spain:parallax-layer-layout:1.1.1'
 
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
-
-
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.firebase:firebase-core:17.0.0'
-    implementation 'com.google.firebase:firebase-auth:18.0.0'
     implementation 'com.firebaseui:firebase-ui-auth:6.0.2'
+    implementation 'com.google.firebase:firebase-auth:19.1.0'
+
+    implementation 'com.firebaseui:firebase-ui-database:4.2.1'
+    // FirebaseUI for Cloud Firestore
+    implementation 'com.firebaseui:firebase-ui-firestore:4.1.0'
+    // FirebaseUI for Firebase Auth
+    implementation 'com.firebaseui:firebase-ui-auth:4.2.1'
+    // FirebaseUI for Cloud Storage
+    implementation 'com.firebaseui:firebase-ui-storage:4.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
