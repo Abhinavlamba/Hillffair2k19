@@ -13,9 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -29,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.appteam.hillfair2k19.FaceSmash;
 import com.appteam.hillfair2k19.R;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
@@ -62,7 +66,9 @@ public class WallFragment extends Fragment implements View.OnClickListener {
     private List<wall> wallList = new ArrayList<>();
     private Activity activity;
     private String id;
-
+    private TextView faceSmash;
+    private int index = 1;
+    private TextView showMore;
 
     public WallFragment() {
     }
@@ -88,6 +94,10 @@ public class WallFragment extends Fragment implements View.OnClickListener {
         ((View) fab).setOnClickListener(this);
         fifthRec = view.findViewById(com.appteam.hillfair2k19.R.id.fifthRec);
         wallAdapter = new WallAdapter(wallList, activity);
+        faceSmash = view.findViewById(R.id.facesmash);
+        showMore = view.findViewById(R.id.showmore);
+        faceSmash.setOnClickListener(this);
+        showMore.setOnClickListener(this);
 
         fifthRec.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.VERTICAL, false));
         fifthRec.setAdapter(wallAdapter);
@@ -115,16 +125,20 @@ public class WallFragment extends Fragment implements View.OnClickListener {
     }
 
     void getData() {
-        loadwall.setVisibility(View.VISIBLE);
+        Log.v("firebase_idxxxx",id);
         wallList.clear();
-        AndroidNetworking.get(getActivity().getString(R.string.baseUrl) + "/feed/1/" + id)
+        AndroidNetworking.get(getActivity().getString(R.string.baseUrl) + "/feed/" + String.valueOf(index) + "/" + id)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
 
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-
+                            if (response.getString("status").equals("failure"))
+                            {
+                                index = 1;
+                                getData();
+                            }
                             System.out.println(response);
                             Log.e("response", response.toString());
                             JSONArray feed = response.getJSONArray("feed");
@@ -135,6 +149,7 @@ public class WallFragment extends Fragment implements View.OnClickListener {
                                 String imgUrl = json.getString("image_url");
                                 int liked = json.getInt("liked");
                                 String postid = json.getString("post_id");
+                                if (imgUrl.contains("http"))
                                 wallList.add(new wall(imgUrl, likes, liked, postid));
                                 loadwall.setVisibility(View.GONE);
                             }
@@ -161,6 +176,18 @@ public class WallFragment extends Fragment implements View.OnClickListener {
             case com.appteam.hillfair2k19.R.id.fab:
                 choosePhotoFromGallery();
                 break;
+            case R.id.facesmash:
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                FaceSmash faceSmash = new FaceSmash();
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.replace(R.id.fragmentHolder, faceSmash);
+                fragmentTransaction.commit();
+                break;
+            case R.id.showmore:
+                index++;
+                getData();
         }
     }
 
@@ -205,6 +232,8 @@ public class WallFragment extends Fragment implements View.OnClickListener {
                                 public void onSuccess(String requestId, Map resultData) {
                                     System.out.println(resultData.get("url"));
                                     img_Url = String.valueOf(resultData.get("url"));
+//                                    Toast.makeText(getActivity(), img_Url, Toast.LENGTH_SHORT).show();
+                                    loadwall.setVisibility(View.VISIBLE);
                                     post();
 
                                 }
@@ -235,6 +264,8 @@ public class WallFragment extends Fragment implements View.OnClickListener {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
+                        index = 1;
                         getData();
                         loadwall.setVisibility(View.GONE);
                     }

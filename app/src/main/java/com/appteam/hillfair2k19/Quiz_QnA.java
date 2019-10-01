@@ -200,7 +200,7 @@ public class Quiz_QnA extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Loggerreer", error.getMessage());
+//                Log.e("Loggerreer", error.getMessage());
 
             }
         }) {

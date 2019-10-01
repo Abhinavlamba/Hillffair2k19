@@ -40,11 +40,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String Login = sharedPreferences.getString("Login", "false");
         String Profile = sharedPreferences.getString("ProfileCreated", "false");
         if (Login.equals("Complete") && Profile.equals("true")) {
-            finish();
             startActivity(new Intent(this, MainActivity.class));
-        } else if (Login.equals("Complete") && Profile.equals("false")) {
             finish();
+        } else if (Login.equals("Complete") && Profile.equals("false")) {
             startActivity(new Intent(this, Profile.class));
+            finish();
         } else {
             setContentView(R.layout.activity_login);
             phone_button = findViewById(R.id.phone_login);

@@ -370,7 +370,7 @@ public class Profile extends AppCompatActivity {
                                 editor.putString("ImageURL", String.valueOf(resultData.get("url")));
                                 editor.commit();
                                 post(ContactNumber);
-                                finish();
+//                                finish();
                             }
 
                             @Override
@@ -410,7 +410,9 @@ public class Profile extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("ProfileCreated", "true");
                         editor.commit();
+                        Toast.makeText(Profile.this, sharedPreferences.getString("fireBaseId","12345"), Toast.LENGTH_SHORT).show();
                         progress.setVisibility(View.GONE);
+                        startActivity(new Intent(Profile.this,MainActivity.class));
                     }
                 },
                 new Response.ErrorListener() {
@@ -422,7 +424,7 @@ public class Profile extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 SharedPreferences sharedPreferences = getSharedPreferences("number", MODE_PRIVATE);
-                String id = sharedPreferences.getString("fireBaseId", null);
+                String id = sharedPreferences.getString("fireBaseId", "12345");
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("firebase_id", id);
                 params.put("roll_number", RollNumber);

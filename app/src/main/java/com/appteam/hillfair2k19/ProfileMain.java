@@ -107,6 +107,7 @@ public class ProfileMain extends AppCompatActivity {
                 Intent i = new Intent(ProfileMain.this, MainActivity.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                finish();
 
             }
         });
@@ -185,8 +186,9 @@ public class ProfileMain extends AppCompatActivity {
                             rollNumber1.setText((String) (response.get("roll_number")));
                             branch1.setText((String) (response.get("branch")));
                             mobile1.setText((String) (response.get("mobile")));
-                            reffaralDone.setText((String) (response.get("referral")));
-                            Picasso.with(ProfileMain.this).load((String) response.get("image_url")).resize(80, 80).centerCrop().into(profilemain);
+                            reffaralDone.setText((String) (response.get("referral_friend")));
+                            String image_url = (String) response.get("image_url");
+                            Picasso.with(ProfileMain.this).load(image_url).resize(80, 80).centerCrop().into(profilemain);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -504,9 +506,10 @@ public class ProfileMain extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        Intent i = new Intent(ProfileMain.this, MainActivity.class);
+        startActivity(i);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        finish();
     }
 }
 

@@ -46,13 +46,15 @@
         android:layout_marginTop="-16dp"
         android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="16dp"
+        >
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/like"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_centerVertical="true"
+            android:visibility="gone"
             android:layout_margin="-32dp"
             app:lottie_rawRes="@raw/heart" />
 
@@ -64,6 +66,7 @@
             android:layout_marginRight="-32dp"
             android:layout_toRightOf="@id/like"
             android:fontFamily="@font/ps"
+            android:visibility="gone"
             android:text="0 Like"
             android:textColor="#ffffff"
             android:textSize="15sp" />

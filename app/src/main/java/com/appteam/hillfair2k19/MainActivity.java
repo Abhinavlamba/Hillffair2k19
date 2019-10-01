@@ -15,6 +15,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnticipateOvershootInterpolator;
@@ -23,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -62,13 +64,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         linkViews();
-
+        homeButton.performClick();
         final SharedPreferences sharedPreferences = getSharedPreferences("number", Context.MODE_PRIVATE);
         fireBaseID = sharedPreferences.getString("fireBaseId", null);
 
         SharedPreferences prefs = getSharedPreferences("number", Context.MODE_PRIVATE);
+        Log.v("firebasexxxx",prefs.getString("fireBaseId","12345"));
         String check2 = prefs.getString("Image", "https://www.fluigent.com/wp-content/uploads/2018/07/default-avatar-BW.png");
         if (!check2.equals("https://www.fluigent.com/wp-content/uploads/2018/07/default-avatar-BW.png")) {
             Bitmap img = setProfile(check2);
@@ -518,6 +520,125 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
             valueAnimator.start();
             check = true;
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(navDrawer, "alpha", 1, 0);
+
+
+            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(aboutNav, "alpha", 1, 0);
+            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(profileNav, "alpha", 1, 0);
+            ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(settingNav, "alpha", 1, 0);
+            ObjectAnimator objectAnimator5 = ObjectAnimator.ofFloat(sponsorNav, "alpha", 1, 0);
+
+            ObjectAnimator objectAnimator6 = ObjectAnimator.ofFloat(aboutNav, "translationY", 0f, 15f);
+            ObjectAnimator objectAnimator7 = ObjectAnimator.ofFloat(profileNav, "translationY", 0f, 15f);
+            ObjectAnimator objectAnimator8 = ObjectAnimator.ofFloat(settingNav, "translationY", 0f, 15f);
+            ObjectAnimator objectAnimator9 = ObjectAnimator.ofFloat(sponsorNav, "translationY", 0f, 15f);
+
+            ObjectAnimator objectAnimator4a = ObjectAnimator.ofFloat(callNav, "translationY", 0f, 15f);
+            ObjectAnimator objectAnimator5a = ObjectAnimator.ofFloat(mapNav, "translationY", 0f, 15f);
+            ObjectAnimator objectAnimator6a = ObjectAnimator.ofFloat(notifNav, "translationY", 0f, 15f);
+            ObjectAnimator objectAnimator6aa = ObjectAnimator.ofFloat(hillffairNav, "translationY", 0f, 15f);
+
+            ObjectAnimator objectAnimator1a = ObjectAnimator.ofFloat(mapNav, "alpha", 1, 0);
+            ObjectAnimator objectAnimator2a = ObjectAnimator.ofFloat(notifNav, "alpha", 1, 0);
+            ObjectAnimator objectAnimator3aa = ObjectAnimator.ofFloat(hillffairNav, "alpha", 1, 0);
+            ObjectAnimator objectAnimator3a = ObjectAnimator.ofFloat(callNav, "alpha", 1, 0);
+
+            objectAnimator.setDuration(250);
+            objectAnimator5.setDuration(250);
+            objectAnimator4.setDuration(250);
+            objectAnimator3.setDuration(250);
+            objectAnimator6.setDuration(250);
+            objectAnimator7.setDuration(250);
+            objectAnimator8.setDuration(250);
+            objectAnimator9.setDuration(250);
+            objectAnimator2.setDuration(250);
+
+            objectAnimator1a.setDuration(250);
+            objectAnimator2a.setDuration(250);
+            objectAnimator3a.setDuration(250);
+            objectAnimator3aa.setDuration(250);
+            objectAnimator4a.setDuration(250);
+            objectAnimator5a.setDuration(250);
+            objectAnimator6a.setDuration(250);
+            objectAnimator6aa.setDuration(250);
+
+            objectAnimator1a.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator2a.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator3a.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator3aa.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator4a.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator5a.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator6a.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator6aa.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator2.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator3.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator4.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator5.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator6.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator7.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator8.setInterpolator(new AnticipateOvershootInterpolator());
+            objectAnimator9.setInterpolator(new AnticipateOvershootInterpolator());
+
+            objectAnimator.setStartDelay(0);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(objectAnimator, objectAnimator2, objectAnimator3, objectAnimator4, objectAnimator5, objectAnimator6, objectAnimator7, objectAnimator8, objectAnimator9, objectAnimator1a, objectAnimator2a, objectAnimator3a, objectAnimator3aa, objectAnimator4a, objectAnimator5a, objectAnimator6a, objectAnimator6aa);
+            animatorSet.start();
+            animatorSet.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    navDrawer.setVisibility(View.GONE);
+                    profileNav.setVisibility(View.GONE);
+                    aboutNav.setVisibility(View.GONE);
+                    settingNav.setVisibility(View.GONE);
+                    sponsorNav.setVisibility(View.GONE);
+                    callNav.setVisibility(View.GONE);
+//                    notifNav.setVisibility(View.GONE);
+                    hillffairNav.setVisibility(View.GONE);
+                    mapNav.setVisibility(View.GONE);
+                    facesmash.setVisibility(View.GONE);
+                    leaderboard.setVisibility(View.GONE);
+                    coreTeamNav.setVisibility(View.GONE);
+                    clubsNav.setVisibility(View.GONE);
+
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (check)
+        super.onBackPressed();
+        else
+        {
+            check = true;
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f);
+            valueAnimator.setDuration(1300);
+            valueAnimator.setInterpolator(new DecelerateInterpolator());
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    if (animation.getAnimatedFraction() <= 0.7f)
+                        navAnim.setProgress(0.7f - animation.getAnimatedFraction());
+                }
+            });
+            valueAnimator.start();
             ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(navDrawer, "alpha", 1, 0);
 
 

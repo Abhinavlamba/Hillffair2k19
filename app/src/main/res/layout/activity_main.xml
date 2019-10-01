@@ -402,7 +402,17 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:visibility="gone" />
-
+            <TextView
+                android:id="@+id/schedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:fontFamily="@font/psb"
+                android:text="Schedule"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:visibility="gone" />
             <TextView
                 android:id="@+id/clubsNav"
                 android:layout_width="wrap_content"

@@ -10,9 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import static com.appteam.hillfair2k19.R.id.fragment;
 
@@ -22,6 +25,7 @@ public class QuizCategories extends Fragment {
     public SharedPreferences.Editor editor;
     RelativeLayout quiz;
     Activity activity;
+    private TextView faceSmash;
 
     public QuizCategories() {
         // required empty constructor
@@ -54,6 +58,19 @@ public class QuizCategories extends Fragment {
         CardView Sports_layout = view.findViewById(R.id.view5);
         CardView Mythology_layout = view.findViewById(R.id.view6);
         CardView Movies_layout = view.findViewById(R.id.view7);
+        faceSmash = view.findViewById(R.id.facesmash);
+        faceSmash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                FaceSmash faceSmash = new FaceSmash();
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.replace(R.id.fragmentHolder, faceSmash);
+                fragmentTransaction.commit();
+            }
+        });
 
         if (categoriesdata.getBoolean("Science", false)) {
             Science_layout.setVisibility(View.GONE);
@@ -87,7 +104,6 @@ public class QuizCategories extends Fragment {
                 Intent intent = new Intent(getActivity(), Quiz_QnA.class);
                 intent.putExtra("Category", 1);
                 startActivity(intent);
-                getActivity().finish();
             }
         });
 
@@ -100,7 +116,6 @@ public class QuizCategories extends Fragment {
                 Intent intent = new Intent(getActivity(), Quiz_QnA.class);
                 intent.putExtra("Category", 2);
                 startActivity(intent);
-                getActivity().finish();
 
             }
         });
@@ -114,7 +129,6 @@ public class QuizCategories extends Fragment {
                 Intent intent = new Intent(getActivity(), Quiz_QnA.class);
                 intent.putExtra("Category", 3);
                 startActivity(intent);
-                getActivity().finish();
 
             }
         });
@@ -128,7 +142,6 @@ public class QuizCategories extends Fragment {
                 Intent intent = new Intent(getActivity(), Quiz_QnA.class);
                 intent.putExtra("Category", 4);
                 startActivity(intent);
-                getActivity().finish();
 
             }
         });
@@ -143,7 +156,6 @@ public class QuizCategories extends Fragment {
                 Intent intent = new Intent(getActivity(), Quiz_QnA.class);
                 intent.putExtra("Category", 5);
                 startActivity(intent);
-                getActivity().finish();
 
             }
         });
@@ -159,7 +171,6 @@ public class QuizCategories extends Fragment {
                 Intent intent = new Intent(getActivity(), Quiz_QnA.class);
                 intent.putExtra("Category", 6);
                 startActivity(intent);
-                getActivity().finish();
 
             }
         });
@@ -175,7 +186,6 @@ public class QuizCategories extends Fragment {
                 Intent intent = new Intent(getActivity(), Quiz_QnA.class);
                 intent.putExtra("Category", 7);
                 startActivity(intent);
-                getActivity().finish();
 
             }
         });
